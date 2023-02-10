@@ -1,38 +1,65 @@
-import { ProductEntity } from './models/product.entity';
-import { Controller, Post, Body, Inject, Get, Param, Delete, Put } from '@nestjs/common';
+import { Product } from '@prisma/client';
+import {
+    Controller,
+    Post,
+    Body,
+    Get,
+    Param,
+    Delete,
+    Put,
+    Res,
+} from '@nestjs/common';
 import { IProductService } from './services/product-service.interface';
+import { BaseController } from 'src/shared/base/controllers/base.controller';
 
 @Controller('products')
-export class ProductController {
-  constructor(private readonly _productService: IProductService) {}
+export class ProductController extends BaseController {
+    constructor(private readonly _productService: IProductService) {
+        super();
+    }
 
-  @Get()
-  async getAll() {
-    const result = await this._productService.getAllProduct();
-    return result;
-  }
+    @Get()
+    async getAll(@Res() res) {
+        const result = await this._productService.getAllProduct();
+        return this.response(res, result);
+    }
 
-  @Get(':id')
-  async getOne(@Param('id') id: string) {
-    const result = await this._productService.getProductById(Number.parseInt(id));
-    return result;
-  }
+    @Get(':id')
+    async getOne(@Res() res, @Param('id') id: string) {
+        const result = await this._productService.getProductById(
+            Number.parseInt(id),
+        );
+        return this.response(res, result);
+    }
 
-  @Put(':id')
-  async update(@Param('id') id: string, @Body() product: ProductEntity) {
-    const result = await this._productService.update(Number.parseInt(id), product);
-    return result;
-  }
+    @Put(':id')
+    async update(
+        @Res() res,
+        @Param('id') id: string,
+        @Body() product: Product,
+    ) {
+        const result = await this._productService.update(
+            Number.parseInt(id),
+            product,
+        );
+        return this.response(res, result);
+    }
 
-  @Post()
-  async create(@Body() product: ProductEntity) {
-    const result = await this._productService.create(product);
-    return result;
-  }
+    @Post()
+    async create(@Res() res, @Body() product: Product) {
+        const result = await this._productService.create(product);
+        return this.response(res, result);
+    }
 
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    const result = await this._productService.remove(Number.parseInt(id));
-    return result;
-  }
+    @Delete(':id')
+    async remove(@Res() res, @Param('id') id: string) {
+        const result = await this._productService.remove(Number.parseInt(id));
+        return this.response(res, result);
+    }
+
+    @Delete('/remove-many/:ids')
+    async removeMany(@Res() res, @Param('ids') ids: string) {
+        const result = await this._productService.removeMany();
+        return this.response(res, result);
+    }
 }

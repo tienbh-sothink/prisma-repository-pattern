@@ -24,3 +24,6 @@ Content-Type: application/json
 
 ### Delete by id
 DELETE http://localhost:3000/products/1 HTTP/1.1
+
+### Delete many
+DELETE http://localhost:3000/products/remove-many/1,2,3 HTTP/1.1

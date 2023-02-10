@@ -2,10 +2,10 @@ import { PrismaPromise } from 'prisma';
 import { CrudTypeMap } from './../tyoes/crud-map-type.interface';
 import { Delegate } from "../delegate/deletegate";
 import { IBaseRepository } from './base-repository.interface';
+import { UnwrapTuple } from '@prisma/client';
 
 export abstract class BaseRepository<TDelegate extends Delegate<TReturnType>, TTypeMap extends CrudTypeMap, TReturnType> implements IBaseRepository<TTypeMap, TReturnType> {
     constructor(protected delegate: TDelegate) {
-
     }
 
     async aggregate(args?: TTypeMap['aggregate']) {

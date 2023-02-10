@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, UnwrapTuple } from '@prisma/client';
 export interface Delegate<TReturnType> {
   aggregate(data: unknown): unknown;
   count(data: unknown): Promise<number>;

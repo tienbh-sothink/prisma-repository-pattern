@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, UnwrapTuple } from '@prisma/client';
 import { CrudTypeMap } from "../tyoes/crud-map-type.interface";
 
 export abstract class IBaseRepository<T extends CrudTypeMap, TReturnType> {
